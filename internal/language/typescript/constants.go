@@ -13,17 +13,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package typescript
 
-import (
-	"github.com/bazelbuild/bazel-gazelle/internal/language"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/go"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/proto"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/typescript"
+const (
+	// FileInfoKey is the name of a private attribute set on generate
+	// ts_library rules. This attribute contains a slice of FileInfo
+	// records, one for each .ts file.
+	FileInfoKey = "_fileinfo"
 )
-
-var languages = []language.Language{
-	typescript.New(),
-	proto.New(),
-	golang.New(),
-}

@@ -13,3 +13,11 @@ gazelle_test(
       "-go_prefix=foo.bar",
     ],
 )
+
+gazelle_test(
+    # Test name must not match directory name or your runtiles can't be created
+    # due to a name conflict.
+    name = "ts_demo",
+    srcs = glob(["typescript/**"]),
+    path = "testing/typescript",
+)

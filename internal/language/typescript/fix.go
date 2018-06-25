@@ -13,17 +13,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package typescript
 
 import (
-	"github.com/bazelbuild/bazel-gazelle/internal/language"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/go"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/proto"
-	"github.com/bazelbuild/bazel-gazelle/internal/language/typescript"
+	"github.com/bazelbuild/bazel-gazelle/internal/config"
+	"github.com/bazelbuild/bazel-gazelle/internal/rule"
 )
 
-var languages = []language.Language{
-	typescript.New(),
-	proto.New(),
-	golang.New(),
+func (_ *typescriptLang) Fix(c *config.Config, f *rule.File) {
 }

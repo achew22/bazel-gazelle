@@ -20,6 +20,7 @@ go_test(
         "//internal/language:go_default_library",
         "//internal/language/go:go_default_library",
         "//internal/language/proto:go_default_library",
+        "//internal/language/typescript:go_default_library",
         "//internal/rule:go_default_library",
     ],
 )

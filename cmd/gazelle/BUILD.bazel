@@ -21,6 +21,7 @@ go_library(
         "//internal/language:go_default_library",
         "//internal/language/go:go_default_library",
         "//internal/language/proto:go_default_library",
+        "//internal/language/typescript:go_default_library",
         "//internal/merger:go_default_library",
         "//internal/repos:go_default_library",
         "//internal/resolve:go_default_library",

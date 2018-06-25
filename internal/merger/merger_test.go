@@ -21,6 +21,7 @@ import (
 	"github.com/bazelbuild/bazel-gazelle/internal/language"
 	"github.com/bazelbuild/bazel-gazelle/internal/language/go"
 	"github.com/bazelbuild/bazel-gazelle/internal/language/proto"
+	"github.com/bazelbuild/bazel-gazelle/internal/language/typescript"
 	"github.com/bazelbuild/bazel-gazelle/internal/rule"
 )
 
@@ -904,7 +905,7 @@ var (
 
 func init() {
 	testKinds = make(map[string]rule.KindInfo)
-	langs := []language.Language{proto.New(), golang.New()}
+	langs := []language.Language{typescript.New(), proto.New(), golang.New()}
 	for _, lang := range langs {
 		for kind, info := range lang.Kinds() {
 			testKinds[kind] = info
