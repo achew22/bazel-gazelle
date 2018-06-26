@@ -84,7 +84,8 @@ func (_ *typescriptLang) GenerateRules(c *config.Config, dir, rel string, f *rul
 
 // RuleName returns a name for the ts_library in the given directory.
 func RuleName(rel string) string {
-	return rel
+	parts := strings.Split(rel, "/")
+	return parts[len(parts)-1]
 }
 
 // buildPackage extracts metadata from the .ts files in a directory and

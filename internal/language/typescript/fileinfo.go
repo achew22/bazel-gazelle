@@ -16,13 +16,12 @@ limitations under the License.
 package typescript
 
 import (
-	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"path/filepath"
 	"regexp"
 	"sort"
-	"strconv"
 )
 
 // FileInfo contains metadata extracted from a .ts file.
@@ -43,6 +42,10 @@ type Option struct {
 
 var typescriptRe = buildTypeScriptRegexp()
 
+func print(v string, a ...interface{}) {
+	fmt.Printf(fmt.Sprintf("\u001b[31;1m%s\u001b[0m", v), a...)
+}
+
 func typescriptFileInfo(dir, name string) FileInfo {
 	info := FileInfo{
 		Path: filepath.Join(dir, name),
@@ -54,9 +57,10 @@ func typescriptFileInfo(dir, name string) FileInfo {
 		return info
 	}
 
-	for _, match := range typescriptRe.FindAllSubmatch(content, -1) {
+	for _, match := range typescriptRe.FindAllStringSubmatch(string(content), -1) {
 		// We only extract imports now
-		imp := unquoteTypeScriptString(match[0])
+		//print("Match: %v\n", match)
+		imp := match[2]
 		info.Imports = append(info.Imports, imp)
 	}
 	sort.Strings(info.Imports)
@@ -64,35 +68,9 @@ func typescriptFileInfo(dir, name string) FileInfo {
 	return info
 }
 
-// Based on https://regex101.com/r/xA9kG3/122
 // TODO(achew22): be a proper typescript parser based on a LL parser. It will
-// be much faster than the regexp.
+// be much faster than the regexp and more correct.
 func buildTypeScriptRegexp() *regexp.Regexp {
-	typescriptReSrc := `import(?:["'\s]*([\w*{}\n\r\t, ]+)from\s*)?["'\s].*([@\w/_-]+)["'\s].*;$`
+	typescriptReSrc := `import ([a-zA-Z][a-zA-Z0-9]*) from ["'](.*)["']`
 	return regexp.MustCompile(typescriptReSrc)
-}
-
-func unquoteTypeScriptString(q []byte) string {
-	// Adjust quotes so that Unquote is happy. We need a double quoted string
-	// without unescaped double quote characters inside.
-	noQuotes := bytes.Split(q[1:len(q)-1], []byte{'"'})
-	if len(noQuotes) != 1 {
-		for i := 0; i < len(noQuotes)-1; i++ {
-			if len(noQuotes[i]) == 0 || noQuotes[i][len(noQuotes[i])-1] != '\\' {
-				noQuotes[i] = append(noQuotes[i], '\\')
-			}
-		}
-		q = append([]byte{'"'}, bytes.Join(noQuotes, []byte{'"'})...)
-		q = append(q, '"')
-	}
-	if q[0] == '\'' {
-		q[0] = '"'
-		q[len(q)-1] = '"'
-	}
-
-	s, err := strconv.Unquote(string(q))
-	if err != nil {
-		log.Panicf("unquoting string literal %s from typescript: %v", q, err)
-	}
-	return s
 }

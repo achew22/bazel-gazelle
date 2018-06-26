@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"log"
 	"path"
-	"strings"
 
 	"github.com/bazelbuild/bazel-gazelle/internal/config"
 	"github.com/bazelbuild/bazel-gazelle/internal/label"
@@ -74,10 +73,6 @@ var (
 )
 
 func resolveTypeScript(ix *resolve.RuleIndex, r *rule.Rule, imp string, from label.Label) (label.Label, error) {
-	if !strings.HasSuffix(imp, ".ts") {
-		return label.NoLabel, fmt.Errorf("can't import non-typescript: %q", imp)
-	}
-
 	if l, err := resolveWithIndex(ix, imp, from); err == nil || err == skipImportError {
 		return l, err
 	} else if err != notFoundError {
@@ -89,6 +84,7 @@ func resolveTypeScript(ix *resolve.RuleIndex, r *rule.Rule, imp string, from lab
 		rel = ""
 	}
 	name := RuleName(rel)
+	print("Name: %s. Rel: %s\n", name, rel)
 	return label.New("", rel, name), nil
 }
 
