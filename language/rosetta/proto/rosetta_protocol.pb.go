@@ -1,0 +1,1 @@
+../../../bazel-bin/language/rosetta/proto/rosetta_protocol_go_proto_/github.com/bazelbuild/bazel-gazelle/language/rosetta/proto/rosetta_protocol.pb.go

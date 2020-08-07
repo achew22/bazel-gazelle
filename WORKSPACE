@@ -3,6 +3,17 @@ workspace(name = "bazel_gazelle")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
+    name = "com_google_protobuf",
+    sha256 = "c5dc4cacbb303d5d0aa20c5cbb5cb88ef82ac61641c951cdf6b8e054184c5e22",
+    strip_prefix = "protobuf-3.12.4",
+    urls = ["https://github.com/protocolbuffers/protobuf/archive/v3.12.4.zip"],
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+http_archive(
     name = "io_bazel_rules_go",
     sha256 = "08369b54a7cbe9348eea474e36c9bbb19d47101e8860cec75cbf1ccd4f749281",
     urls = [
